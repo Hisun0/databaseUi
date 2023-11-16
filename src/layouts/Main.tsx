@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface NavigationProps {
-  children: ReactNode[];
+  children: ReactNode[] | ReactNode;
 }
 
 const Main: React.FC<NavigationProps> = (props) => {
