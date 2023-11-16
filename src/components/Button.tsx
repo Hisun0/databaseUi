@@ -4,16 +4,16 @@ import { deletePost } from "../slices/postsSlice";
 import React, { ReactNode } from "react";
 
 interface ButtonProps {
-  children: ReactNode[];
+  children: ReactNode;
   buttonClass: string;
-  id: string;
+  id: string | number;
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
   const { buttonClass, id, children } = props;
   const dispatch = useAppDispatch();
 
-  const handleDeletePost = (id: string) => dispatch(deletePost(id));
+  const handleDeletePost = (id: string | number) => dispatch(deletePost(id));
 
   if (buttonClass.includes("btn-primary")) {
     return (
