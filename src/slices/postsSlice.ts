@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import routes from "./routes";
 import { RootState } from ".";
+import PostInterface from "../models/posts.interface";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await axios.get(routes.tasksPath());
@@ -24,34 +25,35 @@ export const updatePost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
-  async (id: string) => {
+  async (id: string | number) => {
     await axios.delete(routes.taskPath(id));
     return id;
   }
 );
 
-const postsAdapter = createEntityAdapter();
-
-interface State {
-  entities: Record<string, never>;
-  ids: string[];
-}
-
-const initialState = {
-  entities: {},
-  ids: [],
-} as State;
+const postsAdapter = createEntityAdapter<PostInterface>();
 
 const postsSlice = createSlice({
   name: "posts",
-  initialState,
+  initialState: postsAdapter.getInitialState({
+    loadingStatus: "idle",
+    error: null,
+  }),
   reducers: {
     addPost: postsAdapter.addOne,
     addPosts: postsAdapter.addMany,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPosts.fulfilled, postsAdapter.addMany)
+      .addCase(fetchPosts.pending, (state) => {
+        state.loadingStatus = "loading";
+        state.error = null;
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        postsAdapter.addMany(state, action);
+        state.loadingStatus = "idle";
+        state.error = null;
+      })
       .addCase(deletePost.fulfilled, postsAdapter.removeOne)
       .addCase(updatePost.fulfilled, postsAdapter.updateOne);
   },
