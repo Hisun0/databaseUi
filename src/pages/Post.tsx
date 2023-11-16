@@ -1,18 +1,13 @@
 import { useAppDispatch, useAppSelector } from "../slices";
 import { useParams } from "react-router-dom";
 import { selectors, updatePost } from "../slices/postsSlice";
-import PostInterface from "../models/posts.interface";
 import Main from "../layouts/Main";
 import { Formik, Form, Field } from "formik";
 
 const Post = () => {
   const { id } = useParams();
 
-  if (!id) return <div>Loading...</div>;
-
-  const post = useAppSelector(
-    (state): PostInterface => selectors.selectById(state, id)
-  );
+  const post = useAppSelector((state) => selectors.selectById(state, id));
 
   interface MyFormValues {
     title: string;
