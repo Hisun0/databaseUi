@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../slices";
 import { deletePost } from "../slices/postsSlice";
+import React, { ReactNode } from "react";
 
-const Button = (props) => {
+interface ButtonProps {
+  children: ReactNode[];
+  buttonClass: string;
+  id: string;
+}
+
+const Button: React.FC<ButtonProps> = (props) => {
   const { buttonClass, id, children } = props;
   const dispatch = useAppDispatch();
 
