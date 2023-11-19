@@ -9,17 +9,17 @@ const App = () => {
   return (
     <>
       <Navigation>
-        <Link id="1" to="/" className="a__header">
+        <Link to="/" className="a__header">
           Home
         </Link>
-        <Link id="2" to="/posts" className="a__header">
+        <Link to="/posts" className="a__header">
           Posts
         </Link>
       </Navigation>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/posts/*" element={<PostRoutes />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" Component={Home} />
+        <Route path="/posts/*" Component={PostRoutes} />
+        <Route path="*" Component={NotFound} />
       </Routes>
       <Footer />
     </>
