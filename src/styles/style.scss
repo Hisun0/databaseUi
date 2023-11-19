@@ -58,35 +58,43 @@ body {
 h1 {
   font-family: Mulish-Black;
   font-size: calc(1.425rem + 2.1vw);
-  margin-bottom: 1rem;
 }
 
-h2 {
-  font-family: Mulish-Bold;
-  margin-bottom: 1rem;
-}
-
+h2,
 h3 {
   font-family: Mulish-Bold;
-  margin-bottom: 1rem;
 }
 
-p {
+p,
+.form-control,
+.a__header {
   font-family: Mulish-Medium;
-  margin-bottom: 1rem;
+}
+
+textarea {
+  resize: none;
+}
+
+.form-control {
+  border: 2px solid #00aaff;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+button[type="submit"] {
+  width: 25%;
 }
 
 .container {
-  margin-left: 4rem;
-  margin-right: 4rem;
+  max-width: 1280px;
+  margin: auto;
+  padding: 0 4rem;
 }
 
 header {
   width: 100%;
   border-bottom: 1px solid black;
-  margin-bottom: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 0;
 }
 
 footer {
@@ -131,7 +139,6 @@ footer {
 }
 
 .a__header {
-  font-family: Mulish-Medium;
   color: black;
   text-decoration: none;
 
@@ -140,7 +147,7 @@ footer {
   }
 }
 
-.post-card {
+.card {
   padding: 1rem;
   background-color: white;
   border-radius: 2rem;
@@ -210,8 +217,4 @@ footer {
 
 .color-blue {
   color: #00aaff;
-}
-
-.form {
-  width: 25%;
 }
