@@ -1,47 +1,64 @@
 import axios from "axios";
 import {
+  SerializedError,
   createAsyncThunk,
-  createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
 import routes from "./routes";
-import { RootState } from ".";
 import PostInterface from "../models/posts.interface";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await axios.get(routes.tasksPath());
-  return response.data.posts;
+  const response = await axios.get(routes.postsPath());
+  console.log(response.data);
+  return response.data;
 });
+
+export const createPost = createAsyncThunk(
+  "posts/createPost",
+  async (data: { title: string; body: string }) => {
+    await axios.post(routes.postAddPath(), data);
+    return data;
+  }
+);
 
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
-  async (data: string) => {
-    const { id, title, body } = JSON.parse(data);
-    const response = await axios.put(routes.taskPath(id), { title, body });
-    console.log(response.data);
+  async (data: { title: string; body: string; id: string }) => {
+    const { id, title, body } = data;
+    const response = await axios.patch(routes.postPath(id), { title, body });
     return response.data;
   }
 );
 
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
-  async (id: string | number) => {
-    await axios.delete(routes.taskPath(id));
+  async (id: string) => {
+    await axios.delete(routes.postPath(id));
     return id;
   }
 );
 
-const postsAdapter = createEntityAdapter<PostInterface>();
+// const postsAdapter = createEntityAdapter<PostInterface>();
+
+interface State {
+  entities: PostInterface[];
+  loadingStatus: string;
+  error: null | SerializedError;
+}
+
+const initialState = {
+  entities: [],
+  loadingStatus: "idle",
+  error: null,
+} as State;
 
 const postsSlice = createSlice({
   name: "posts",
-  initialState: postsAdapter.getInitialState({
-    loadingStatus: "idle",
-    error: null,
-  }),
+  initialState,
   reducers: {
-    addPost: postsAdapter.addOne,
-    addPosts: postsAdapter.addMany,
+    addPost(state, { payload }) {
+      state.entities.push(payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,18 +66,23 @@ const postsSlice = createSlice({
         state.loadingStatus = "loading";
         state.error = null;
       })
-      .addCase(fetchPosts.fulfilled, (state, action) => {
-        postsAdapter.addMany(state, action);
+      .addCase(fetchPosts.fulfilled, (state, { payload }) => {
+        state.entities = payload;
         state.loadingStatus = "idle";
         state.error = null;
       })
-      .addCase(deletePost.fulfilled, postsAdapter.removeOne)
-      .addCase(updatePost.fulfilled, postsAdapter.updateOne);
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.loadingStatus = "failed";
+        state.error = action.error;
+      })
+      .addCase(deletePost.fulfilled, (state, { payload }) => {
+        state.entities = state.entities.filter(
+          (entity) => entity._id !== payload
+        );
+        state.loadingStatus = "idle";
+        state.error = null;
+      });
   },
 });
-
-export const selectors = postsAdapter.getSelectors<RootState>(
-  (state) => state.posts
-);
 
 export default postsSlice.reducer;
