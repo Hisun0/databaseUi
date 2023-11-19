@@ -1,8 +1,6 @@
 export default interface PostInterface {
   body: string;
-  id: number;
-  reactions: number;
+  _id: string;
   tags: string[];
   title: string;
-  userId: number;
 }
