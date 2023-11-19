@@ -1,27 +1,24 @@
-import Button from "./Button";
 import React from "react";
+import { Link } from "react-router-dom";
 
 import PostInterface from "../models/posts.interface";
 
 interface PostItemProps {
   post: PostInterface;
+  onDeletePost: (id: string) => void;
 }
 
-const PostItem: React.FC<PostItemProps> = (props) => {
-  const { post } = props;
-
-  return (
-    <div className="post-card">
-      <h3>{post.title}</h3>
-      <p>{post.body}</p>
-      <Button buttonClass="btn-primary mr-1" id={post.id}>
-        Edit post
-      </Button>
-      <Button buttonClass="btn-danger" id={post.id}>
-        Delete
-      </Button>
-    </div>
-  );
-};
+const PostItem: React.FC<PostItemProps> = ({ post, onDeletePost }) => (
+  <div className="card">
+    <h3 className="mb-1">{post.title}</h3>
+    <p className="mb-1">{post.body}</p>
+    <Link to={`/posts/${post._id}`}>
+      <button className="btn btn-primary mr-1">Edit post</button>
+    </Link>
+    <button className="btn btn-danger" onClick={() => onDeletePost(post._id)}>
+      Delete
+    </button>
+  </div>
+);
 
 export default PostItem;
