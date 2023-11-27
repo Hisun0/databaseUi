@@ -38,8 +38,6 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-// const postsAdapter = createEntityAdapter<PostInterface>();
-
 interface State {
   entities: PostInterface[];
   loadingStatus: string;
