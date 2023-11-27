@@ -3,15 +3,13 @@ import { Request, Response, NextFunction } from "express";
 import BadRequestError from "../errors/BadRequestError.ts";
 import PostModel from "../models/postModel.ts";
 
-interface CrudInterface {
-  req: Request;
-  res: Response;
-  next: NextFunction;
-}
+type ControllerType = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void>;
 
-type CrudFunction = (crudInterface: CrudInterface) => Promise<void>;
-
-export const getPosts: CrudFunction = async ({ res, next }) => {
+export const getPosts: ControllerType = async (_req, res, next) => {
   try {
     const posts = await PostModel.find();
     res.send(posts);
@@ -20,7 +18,7 @@ export const getPosts: CrudFunction = async ({ res, next }) => {
   }
 };
 
-export const createPost: CrudFunction = async ({ req, res, next }) => {
+export const createPost: ControllerType = async (req, res, next) => {
   const { body, tags, title } = req.body;
 
   try {
@@ -40,7 +38,7 @@ export const createPost: CrudFunction = async ({ req, res, next }) => {
   }
 };
 
-export const deletePostById: CrudFunction = async ({ req, res, next }) => {
+export const deletePostById: ControllerType = async (req, res, next) => {
   const { id } = req.params;
   try {
     const deleteResponse = await PostModel.findByIdAndDelete(id);
@@ -50,7 +48,7 @@ export const deletePostById: CrudFunction = async ({ req, res, next }) => {
   }
 };
 
-export const updatePostById: CrudFunction = async ({ req, res, next }) => {
+export const updatePostById: ControllerType = async (req, res, next) => {
   const { id } = req.params;
   try {
     const updateResponse = await PostModel.findByIdAndUpdate(id, req.body);
