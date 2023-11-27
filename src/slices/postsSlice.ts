@@ -16,8 +16,8 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 export const createPost = createAsyncThunk(
   "posts/createPost",
   async (data: { title: string; body: string }) => {
-    await axios.post(routes.postAddPath(), data);
-    return data;
+    const response = await axios.post(routes.postAddPath(), data);
+    return response.data;
   }
 );
 
@@ -74,6 +74,9 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loadingStatus = "failed";
         state.error = action.error;
+      })
+      .addCase(createPost.fulfilled, (state, { payload }) => {
+        state.entities.push(payload);
       })
       .addCase(deletePost.fulfilled, (state, { payload }) => {
         state.entities = state.entities.filter(
