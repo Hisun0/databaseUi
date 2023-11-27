@@ -18,7 +18,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <div className="flex-row align-center mb-1">
       {children}
       <button
-        className="btn btn-primary mb-1"
+        className="btn btn-primary"
         onClick={() => navigate(navigatePath ?? "/posts")}
       >
         {buttonText ?? "Back to posts"}
