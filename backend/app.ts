@@ -1,6 +1,6 @@
-import express from "express";
+import express, { Express } from "express";
 import mongoose from "mongoose";
-import router from "./routes/postsRouter.js";
+import router from "./routes/postsRouter";
 import bodyParser from "body-parser";
 
 mongoose
@@ -8,7 +8,7 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch(() => console.log("ne poshlo"));
 
-const app = express();
+const app: Express = express();
 const PORT = 8080;
 
 app.use(express.static("dist"));
