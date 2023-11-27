@@ -9,10 +9,15 @@ const databaseUrl = process.env.DB_CONNECTION;
 
 if (!databaseUrl) throw new Error("Your connection string is not defined!");
 
-mongoose
-  .connect(databaseUrl)
-  .then(() => console.log("DB connected"))
-  .catch(() => new Error("Database is not connected!"));
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(databaseUrl);
+    console.log("Database connected");
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
 
 const app: Express = express();
 const PORT = process.env.PORT;
@@ -24,4 +29,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(router);
 
-app.listen(PORT, () => console.log("Server started"));
+connectDatabase().then(() =>
+  app.listen(PORT, () => console.log("Server started"))
+);
