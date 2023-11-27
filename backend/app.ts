@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import mongoose from "mongoose";
-import router from "./routes/postsRouter";
+import router from "./routes/postsRouter.ts";
 import bodyParser from "body-parser";
 
 mongoose
