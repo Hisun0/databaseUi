@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import BadRequestError from "../errors/BadRequestError.js";
-import PostModel from "../models/postModel.js";
+import BadRequestError from "../errors/BadRequestError.ts";
+import PostModel from "../models/postModel.ts";
 
 interface CrudInterface {
   req: Request;
@@ -11,7 +11,7 @@ interface CrudInterface {
 
 type CrudFunction = (crudInterface: CrudInterface) => Promise<void>;
 
-export const getPosts: CrudFunction = async ({ req, res, next }) => {
+export const getPosts: CrudFunction = async ({ res, next }) => {
   try {
     const posts = await PostModel.find();
     res.send(posts);
@@ -31,7 +31,7 @@ export const createPost: CrudFunction = async ({ req, res, next }) => {
     });
 
     res.send(post);
-  } catch (err) {
+  } catch (err: any) {
     if (err.name === "ValidationError") {
       next(new BadRequestError("Некорректные данные"));
       return;
