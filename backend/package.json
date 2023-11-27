@@ -2,8 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec 'npm run start'",
-    "start": "node --loader ts-node/esm app.ts",
-    "vercel-build": "node --loader ts-node/esm app.ts"
+    "start": "node --loader ts-node/esm app.ts"
   },
   "dependencies": {
     "express": "^4.18.2"
