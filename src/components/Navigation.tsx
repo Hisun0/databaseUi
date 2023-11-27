@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import logoImage from "../assets/DummyUI.svg";
+import logoImage from "../assets/DatabaseUI.svg";
+import { Link } from "react-router-dom";
 
 interface NavigationProps {
   children: ReactNode[];
@@ -8,7 +9,9 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ children }) => (
   <header className="mb-1">
     <div className="container flex-row">
-      <img src={logoImage} alt="logo" />
+      <Link to="/">
+        <img src={logoImage} alt="logo" />
+      </Link>
       <nav>
         <ul className="list__header">
           {children.map((child, index) => (
